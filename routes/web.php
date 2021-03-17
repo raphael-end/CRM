@@ -30,7 +30,7 @@ Route::prefix("admin")->middleware("check.is.admin")->name('admin.')->group(func
     Route::post('/cadastro/tarefas/sucess', [App\Http\Controllers\adminController::class, 'storeTarefas'])->name("storeTarefas");
 
     /* -------------------------------------- clientes cadastro -------------------------------------- */
-    Route::get('/cadastro/cliente', [App\Http\Controllers\adminController::class, 'cadastroDeCliente'])->name("cadastroDeCliente");
+    Route::get('/alteracao/cliente', [App\Http\Controllers\adminController::class, 'cadastroDeCliente'])->name("alteraCliente");
     Route::post('/cadastro/cliente/sucess', [App\Http\Controllers\adminController::class, 'storeCliente'])->name("storeCliente");
 
     /* -------------------------------------- Estoque -------------------------------------- */
@@ -44,6 +44,12 @@ Route::prefix("admin")->middleware("check.is.admin")->name('admin.')->group(func
     /* -------------------------------------- user -------------------------------------- */
     Route::get('/novoUsuario', [App\Http\Controllers\adminController::class, 'user'])->name("user");
     Route::post('/cadastro/user/sucess', [App\Http\Controllers\adminController::class, 'storeUser'])->name("newUser");
+
+
+    /* -------------------------------------- warnings -------------------------------------- */
+
+    Route::get('/deletePendencia', [App\Http\Controllers\adminController::class, 'deletePendencia'])->name("deletePendencia");
+ 
 });
 
 Route::get('/sair', [App\Http\Controllers\AdminController::class, 'sair'])->name("sair");

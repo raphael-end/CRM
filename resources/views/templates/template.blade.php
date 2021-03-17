@@ -26,6 +26,7 @@
     <script src="../../js/charts-pie.js " defer></script>
     <script src="../../js/charts-lines.js " defer></script>
   </head>
+  
 <body>
   @yield('conteudo')
   </body>

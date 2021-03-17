@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
+use function PHPUnit\Framework\isEmpty;
+
 class adminController extends Controller
 {
     public $nome_cliente;
@@ -15,7 +17,7 @@ class adminController extends Controller
     public function index(Request $request){
 
         //listando clientes
-        $clientes = DB::table('cliente')->get();
+        $clientes = DB::table('cliente')->paginate(5);
         $data["clientes"] = $clientes;        
         $clientQuant = DB::table('cliente')->count();
 
@@ -31,9 +33,35 @@ class adminController extends Controller
         $novosClientes['novasTarefas'] = DB::table('tarefas')->whereRaw('created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)')->count();
         $novosClientes['novasTarefasList'] = DB::table('tarefas')->whereRaw('created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)')->get();
 
-        return view('dashboard',['data'=>$data, 'clientQuant'=>$clientQuant, 'valor_total'=>$valor_total, 'novosClientes'=>$novosClientes]);
+        //select users a ligar
+        $ligar = "ligar";
+        
+        $status = DB::table('tarefas')->inRandomOrder()->select('id_cliente')->where('status',$ligar)->limit(1)->get();
+        
+        if(!isset($status[0])){
+             $clientePendencia = "";
+        }else{
+             $clientePendencia = DB::table('cliente')->select('id', 'nome', 'telefone')->where('id', $status[0]->id_cliente)->get(); 
+        }
+        
+
+        return view('dashboard',['data'=>$data, 'clientQuant'=>$clientQuant, 'valor_total'=>$valor_total, 'novosClientes'=>$novosClientes, 'clientePendencia'=>$clientePendencia]);
     }
 
+    public function deletePendencia(){
+
+        $id = $_GET['id'];
+
+
+        DB::table('tarefas')->where('id_cliente',$id)->update(['status'=>"ligado"]);
+        
+
+
+
+        return view('deletePendencia');
+    }
+
+   
     public function vendas(){
 
          //listando clientes
@@ -113,23 +141,45 @@ class adminController extends Controller
         $data['valorRep'] = $request->get('valorRep');
         $data['custoRep'] = $request->get('custoRep');
         $data['nota'] = $request->get('nota');
+        $status = 'ligar';
+        $data['status'] = $status;
 
-        $data2 = $request->get('produtos');
+        if($request->file('arquivo')->isValid()) {
 
-        $custo = DB::table('produto')->select('quantidade')->where('nome',$data2)->get();
- 
-        $alg = ($custo[0]->quantidade) - 1;
+            (string)$nameArquivo =  $request->id_cliente . '.' . $request->arquivo->getClientOriginalName();
+
+            $query = DB::table('tarefas')->select('documento')->where('documento',(string)$nameArquivo);
+            $row = $query->count();
+
+            if( $row == 1){
+                alert()->error('Erro!','Já existe um documento com este nome!');
+                return redirect()->back();
+            }
+            else{
+                $request->file('arquivo')->storeAs('files', $nameArquivo);
+                $data['documento'] = (string)$nameArquivo;
+
+                $data2 = $request->get('produtos');
+
+                $custo = DB::table('produto')->select('quantidade')->where('nome',$data2)->get();
         
-        DB::table('produto')->where('nome',$data2)->update(['quantidade'=>$alg]);
-        DB::table('tarefas')->insert($data);
-
-        return redirect()->back(); 
+                $alg = ($custo[0]->quantidade) - 1;
+                
+                DB::table('produto')->where('nome',$data2)->update(['quantidade'=>$alg]);
+                DB::table('tarefas')->insert($data);
+                Alert::success('Sucesso', 'Tareda cadastrada com sucesso');
+                return redirect()->back(); 
     }
+            }
+            
+        }
+        
 
 
     
     public function cadastroDeCliente(Request $request){
-
+        $id = $_GET['id'];
+        $clientes2 = DB::table('cliente')->get()->where('id',$id);
         return view('newCliente');
     }
     public function storeCliente(Request $request){
@@ -145,7 +195,7 @@ class adminController extends Controller
 
 
         DB::table('cliente')->insert($data);
-        
+        Alert::success('Sucesso', 'Usuario cadastrado com sucesso');
         return redirect()->back();
     }
 
@@ -163,7 +213,7 @@ class adminController extends Controller
         $data['preco'] = $request->get('preco');
 
         DB::table('produto')->insert($data);
-        
+        Alert::success('Sucesso', 'Produto cadastrado com sucesso');
         return redirect()->back();
     }
     public function produto(){

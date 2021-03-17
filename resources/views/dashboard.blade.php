@@ -1,6 +1,124 @@
 @extends('templates.template')
 
 @section('conteudo')
+
+<style>
+    body,
+html {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    background: rgb(255, 255, 255);
+}
+
+
+* {
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+}
+
+.card {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    height: 180px;
+    width: 300px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    animation: to-right 1s;
+}
+
+.header-card {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-card svg {
+    stroke: rgb(37, 37, 37);
+    width: 30px;
+    height: 30px;
+    padding: 1px;
+    stroke-width: 2;
+    border-radius: 5px;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.header-card svg:hover {
+    background: rgb(204, 204, 204);
+}
+
+.header-card h2 {
+    font-size: 13pt;
+    color: rgb(37, 37, 37);
+}
+
+.card p {
+    color: rgb(37, 37, 37);
+    font-size: 10pt;
+    margin-top: 10px;
+}
+
+.card p span {
+    color: rgb(37, 37, 37);
+    font-weight: bold;
+}
+
+.card button {
+    padding: 10px;
+    width: 120px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+    color: white;
+    font-size: 8pt;
+    background: #7E3AF2;
+    border-radius: 5px;
+    transition: .3s;
+}
+
+.card button:hover {
+    transform: scale(1.02);
+}
+
+@keyframes to-right {
+    0%{
+        margin-right: -500px;
+    }
+    100%{
+        margin-right: 20px;
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+    .card {
+        bottom: 10px;
+        right: 10px;
+        width: 280px;
+    }
+}
+
+    .modal {
+      transition: opacity 0.25s ease;
+    }
+    body.modal-active {
+      overflow-x: hidden;
+      overflow-y: visible !important;
+    }
+  </style>
     <div
       class="flex h-screen bg-gray-50 dark:bg-gray-900"
       :class="{ 'overflow-hidden': isSideMenuOpen }"
@@ -942,7 +1060,15 @@
                 </div>
               </div>
             </div>
-         
+            <div>
+                    <a
+                    
+                      type="submit"
+                      class="modal-open   px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                    >
+                    Adicionar novo cliente
+                    </a>
+                  </div>
             <!-- New Table -->
             <div class="w-full overflow-hidden rounded-lg shadow-xs">
               <div class="w-full overflow-x-auto">
@@ -955,6 +1081,7 @@
                       <th class="px-4 py-3">Telefone</th>
                       <th class="px-4 py-3">Endereco</th>
                       <th class="px-4 py-3">Aparelho</th>
+                      <th class="px-4 py-3">Ações</th>
                     </tr>
                   </thead>
                   @foreach ($data["clientes"] as $cliente)
@@ -992,11 +1119,32 @@
                       <td class="px-4 py-3 text-sm">
                         {{$cliente->aparelho}}
                       </td>
+                      <td class="px-4 py-3 text-sm">
+        
+                            <a
+                            href="admin/alteracao/cliente?id={{$cliente->id}}"
+                            type="button" value="{{$cliente->id}}"
+                            class="border  bg-yellow-300 text-black rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-yellow-600 focus:outline-none focus:shadow-outline"
+                            >
+                              E
+                            </a>
+                          
+                      
+                          <a href="/deletar?id={{$cliente->id}}">
+                            <button
+                              type="button"
+                              class="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline"
+                            >
+                              D
+                            </button>
+                          </a>
+                      </td>
                     </tr>
-
+                   
                
                   </tbody>
                   @endforeach
+                  
                 </table>
               </div>
               <div
@@ -1004,108 +1152,14 @@
               >
             
                 <span class="flex items-center col-span-3">
-                  <div>
-                    <a
-                      href="{{route("admin.cadastroDeCliente")}}"
-                      type="submit"
-                      class="px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                    >
-                    Adicionar novo cliente
-                    </a>
-                  </div>
+                 
                 </span>
                 <span class="col-span-2"></span>
-                <!-- Pagination -->
-                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-                  <nav aria-label="Table navigation">
-                    <ul class="inline-flex items-center">
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple"
-                          aria-label="Previous"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="w-4 h-4 fill-current"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                              clip-rule="evenodd"
-                              fill-rule="evenodd"
-                            ></path>
-                          </svg>
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                        >
-                          1
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                        >
-                          2
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 border border-r-0 border-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple"
-                        >
-                          3
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                        >
-                          4
-                        </button>
-                      </li>
-                      <li>
-                        <span class="px-3 py-1">...</span>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                        >
-                          8
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                        >
-                          9
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
-                          aria-label="Next"
-                        >
-                          <svg
-                            class="w-4 h-4 fill-current"
-                            aria-hidden="true"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                              clip-rule="evenodd"
-                              fill-rule="evenodd"
-                            ></path>
-                          </svg>
-                        </button>
-                      </li>
-                    </ul>
-                  </nav>
-                </span>
+                
+         
               </div>
             </div>
-
+            <h1>{{ $data['clientes']->links() }}</h1>
             <!-- Charts -->
             <h2
               class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
@@ -1174,8 +1228,215 @@
         </main>
       </div>
     </div>
-
-
-
     
+                            <!--Modal CADASTRO-->
+                            <div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
+                                <div class="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+                                
+                                <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+                               
+                                  <div class="modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+                                    <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                                      <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                                    </svg>
+                                    <span class="text-sm">(Esc)</span>
+                                  </div>
+
+                                  <!-- Add margin if you want to see some of the overlay behind the modal-->
+                                  <div class="modal-content py-4 text-left px-6">
+                                  <main class="h-full pb-16 overflow-y-auto">
+                                  <a
+              class="flex items-center  mb-1 text-sm font-semibold mt-1 text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
+            >
+              
+                
+                <svg
+                  class="w-5 h-5 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  ></path>
+                </svg>
+                      <h2
+                    class="my-6 text-2xl font-semibold text-gray-100 dark:text-gray-200"
+                  >
+                    Cadastro de cliente
+                  </h2>
+        
+              
+            </a>
+                                            <div class="container px-6 mx-auto grid">
+                                            
+                                              <div
+                                                class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
+                                              >
+                                              <form action="{{route ("admin.storeCliente")}}" method="post">
+                                                @csrf
+                                                <label class="block text-sm">
+                                                  <span class="text-gray-700 dark:text-gray-400">Nome</span>
+                                                  <input
+                                                  required
+                                                  type="text" name="nome" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    placeholder="Raphael de Moura"
+                                                  />
+                                                </label>
+
+                                                <label class="block mt-4 text-sm">
+                                                  <span class="text-gray-700 dark:text-gray-400">
+                                                    E-mail
+                                                  </span>
+                                                  <input
+                                                    required
+                                                    type="text" name="email" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    placeholder="raphaelmourateixeira@gmail.com"
+                                                  />
+                                                </label>
+                                                <label class="block mt-4 text-sm">
+                                                  <span class="text-gray-700 dark:text-gray-400">
+                                                    Telefone
+                                                  </span>
+                                                  <input
+                                                    required
+                                                    type="text" name="telefone"
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    placeholder="(31)975695622"
+                                                  />
+                                                </label> 
+                                                <label class="block mt-4 text-sm">
+                                                  <span class="text-gray-700 dark:text-gray-400">
+                                                    Endereço
+                                                  </span>
+                                                  <input
+                                                    required
+                                                    type="text" name="endereco"
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    placeholder="Rua 1, bairro 2, numero 0, mg"
+                                                  />
+                                                </label> 
+                                                <label class="block mt-4 text-sm">
+                                                  <span class="text-gray-700 dark:text-gray-400">
+                                                    CPF
+                                                  </span>
+                                                  <input
+                                                    required
+                                                    type="text" name="cpf"
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    placeholder="130.850.826-12"
+                                                  />
+                                                </label> 
+                                                <label class="block mt-4 text-sm">
+                                                  <span class="text-gray-700 dark:text-gray-400">
+                                                    Aparelho
+                                                  </span>
+                                                  <input
+                                                    required
+                                                    type="text" name="aparelho"
+                                                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                    placeholder="Iphone 11"
+                                                  />
+                                                </label> 
+                                                <div>
+                                        
+                                                </div>
+                                              
+                                              </div>
+                                            
+                                              </div>
+                                          </main>
+
+                                    <!--Footer-->
+                                    <div class="flex justify-between pt-2">
+                                    <button
+                                      type="submit"
+                                      class="px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                                    >
+                                    Cadastrar
+                                    </button>
+                                      <button class="modal-close px-4 bg-purple-600 p-3 rounded-lg text-white hover:bg-indigo-400">Fechar</button>
+                                    </div>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                             
+                            @if($clientePendencia != "")
+                             <!-- MODAL LIGAR  -->
+                             <div class="card" id="modal-bottom">
+                              <div class="header-card">
+                                  <h2>{{$clientePendencia[0]->nome}}</h2>
+                                  <svg id="close-modal-bottom" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="56" height="56" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                      <line x1="18" y1="6" x2="6" y2="18" />
+                                      <line x1="6" y1="6" x2="18" y2="18" />
+                                  </svg>
+                              </div>
+                              <p>{{$clientePendencia[0]->nome}} está esperando sua ligação.</p>
+                              <p>Número: <span>{{$clientePendencia[0]->telefone}}</span></p>
+                              <a href="/admin/deletePendencia?id={{$clientePendencia[0]->id}}" target="_blank">
+                                  <button type="submit" id="called-client">Já Liguei</button>
+                              </a>
+                          </div>
+                          @endif
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+        $("#close-modal-bottom").click(() => {
+          $('#modal-bottom').hide(400);            
+        });
+
+        $("#called-client").click(() => {
+            $('#modal-bottom').hide(400);
+        });
+    </script>
+
+
+
+  <script>
+    var openmodal = document.querySelectorAll('.modal-open')
+    for (var i = 0; i < openmodal.length; i++) {
+      openmodal[i].addEventListener('click', function(event){
+    	event.preventDefault()
+    	toggleModal()
+      })
+    }
+    
+    const overlay = document.querySelector('.modal-overlay')
+    overlay.addEventListener('click', toggleModal)
+    
+    var closemodal = document.querySelectorAll('.modal-close')
+    for (var i = 0; i < closemodal.length; i++) {
+      closemodal[i].addEventListener('click', toggleModal)
+    }
+    
+    document.onkeydown = function(evt) {
+      evt = evt || window.event
+      var isEscape = false
+      if ("key" in evt) {
+    	isEscape = (evt.key === "Escape" || evt.key === "Esc")
+      } else {
+    	isEscape = (evt.keyCode === 27)
+      }
+      if (isEscape && document.body.classList.contains('modal-active')) {
+    	toggleModal()
+      }
+    };
+    
+    
+    function toggleModal () {
+      const body = document.querySelector('body')
+      const modal = document.querySelector('.modal')
+      modal.classList.toggle('opacity-0')
+      modal.classList.toggle('pointer-events-none')
+      body.classList.toggle('modal-active')
+    }
+    
+     
+  </script>
+          @include('sweetalert::alert')
+
+
 @endsection

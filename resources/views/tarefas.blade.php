@@ -1,6 +1,7 @@
 @extends('templates.templateCliente')
 
 @section('conteudo')
+@include('sweetalert::alert')
         <main class="h-full pb-16 overflow-y-auto">
 
        
@@ -102,7 +103,7 @@
               </div>
             </a>
             </div>
-            <div class="w-1/2 pl-10 pt-10">
+            <div class="w-full pl-10 pt-10">
             <!-- General elements -->
             <h4
               class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
@@ -112,7 +113,7 @@
             <div
               class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
             >
-            <form action="{{route ("admin.storeTarefas")}}" method="post">
+            <form action="{{route ("admin.storeTarefas")}}" method="post"  enctype="multipart/form-data">
             @csrf
             <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">Nome da atividade</span>
@@ -188,7 +189,7 @@
                           <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                       </svg>
                       <span class="mt-2 text-base leading-normal">Selecione o documento de confirmação</span>
-                      <input type='file' class="hidden" />
+                      <input type="file" name="arquivo" class="hidden" />
                   </label>
               </div>
               <div>
@@ -209,7 +210,7 @@
               <div class="text-purple-600 rounded-full h-10 w-10 mt-4  mb-4 flex items-center justify-center bg-purple-600"><span class="py-10">Ccc</span></div>
             </div>
             <div
-            class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
+            class=" px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
              >
               <div class="flex">
                 <svg
@@ -243,12 +244,16 @@
                     </select>
                     @endforeach
                   </label>
+                  <p>storage/files/{{$tarefa->documento}}</p>
+                  
+                  <link rel="stylesheet" href="storage/files/{{$tarefa->documento}}">
                   
                 </div>
                 
               </div>
              </div>
-             <div class="w-1/2">
+             
             @endforeach
         </main>
+       
 @endsection
