@@ -23,20 +23,33 @@ Route::get('/', function(){
 Route::prefix("admin")->middleware("check.is.admin")->name('admin.')->group(function(){
     
     /* -------------------------------------- admin -------------------------------------- */
+
     Route::get('/', [App\Http\Controllers\adminController::class, 'index'])->name("index");
 
+    /* -------------------------------------- pesquisa -------------------------------------- */
+
+    Route::get('/pesquisa', [App\Http\Controllers\adminController::class, 'pesquisa'])->name("pesquisa");
+    
     /* --------------------------------------  tarefas -------------------------------------- */
     Route::get('/cliente', [App\Http\Controllers\adminController::class, 'tarefas'])->name("tarefas");
     Route::post('/cadastro/tarefas/sucess', [App\Http\Controllers\adminController::class, 'storeTarefas'])->name("storeTarefas");
 
     /* -------------------------------------- clientes cadastro -------------------------------------- */
-    Route::get('/alteracao/cliente', [App\Http\Controllers\adminController::class, 'cadastroDeCliente'])->name("alteraCliente");
+    //cadastra
     Route::post('/cadastro/cliente/sucess', [App\Http\Controllers\adminController::class, 'storeCliente'])->name("storeCliente");
+    //altera
+    Route::get('/alteracao/cliente', [App\Http\Controllers\adminController::class, 'alteraClienteView'])->name("alteraClienteView");
+    Route::post('/alteracao/cliente/sucess', [App\Http\Controllers\adminController::class, 'alteraCliente'])->name("alteraCliente");
+    //exclui
+    Route::get('/deletaCliente', [App\Http\Controllers\adminController::class, 'deletaCliente'])->name("deletaCliente");
 
     /* -------------------------------------- Estoque -------------------------------------- */
     Route::get('/estoque', [App\Http\Controllers\adminController::class, 'estoque'])->name("estoque");
     Route::post('/cadastro/produto/sucess', [App\Http\Controllers\adminController::class, 'storeProduto'])->name("storeProduto");
     Route::get('/produto', [App\Http\Controllers\adminController::class, 'produto'])->name("produto");
+    //altera
+    Route::get('/alteracao/produto', [App\Http\Controllers\adminController::class, 'alteraProdutoView'])->name("alteraProdutoView");
+    Route::post('/alteracao/produto/sucess', [App\Http\Controllers\adminController::class, 'alteraProduto'])->name("alteraProduto");
 
     /* -------------------------------------- Estoque -------------------------------------- */
     Route::get('/vendas', [App\Http\Controllers\adminController::class, 'vendas'])->name("vendas");

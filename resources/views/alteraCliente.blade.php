@@ -30,11 +30,14 @@
             <div
               class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
             >
-            <form action="{{route ("admin.storeCliente")}}" method="post">
+            @foreach ($data["clientes"] as $cliente)
+            <form action="{{route ("admin.alteraCliente")}}" method="post">
               @csrf
+              <input hidden type="text" name="id" value="{{$id}} ">
               <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">Nome</span>
                 <input
+                  value="{{$cliente->nome}}"
                  type="text" name="nome" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   placeholder="Raphael de Moura"
                 />
@@ -45,6 +48,7 @@
                   E-mail
                 </span>
                 <input
+                value="{{$cliente->email}}"
                   type="text" name="email" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   placeholder="raphaelmourateixeira@gmail.com"
                 />
@@ -54,6 +58,7 @@
                   Telefone
                 </span>
                 <input
+                value="{{$cliente->telefone}}"
                   type="text" name="telefone"
                   class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   placeholder="(31)975695622"
@@ -64,6 +69,7 @@
                   Endereço
                 </span>
                 <input
+                value="{{$cliente->endereco}}"
                   type="text" name="endereco"
                   class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   placeholder="Rua 1, bairro 2, numero 0, mg"
@@ -74,6 +80,7 @@
                   CPF
                 </span>
                 <input
+                value="{{$cliente->cpf}}"
                   type="text" name="cpf"
                   class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   placeholder="130.850.826-12"
@@ -84,6 +91,7 @@
                   Aparelho
                 </span>
                 <input
+                value="{{$cliente->aparelho}}"
                   type="text" name="aparelho"
                   class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   placeholder="Iphone 11"
@@ -98,6 +106,7 @@
                 </button>
               </div>
               </form>
+              @endforeach
             </div>
            
              </div>

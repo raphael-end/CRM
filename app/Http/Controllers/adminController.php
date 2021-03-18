@@ -37,6 +37,8 @@ class adminController extends Controller
         $ligar = "ligar";
         
         $status = DB::table('tarefas')->inRandomOrder()->select('id_cliente')->where('status',$ligar)->limit(1)->get();
+
+        $status = DB::table('tarefas')->inRandomOrder()->select('id_cliente')->where('status',$ligar)->limit(1)->get();
         
         if(!isset($status[0])){
              $clientePendencia = "";
@@ -61,7 +63,10 @@ class adminController extends Controller
         return view('deletePendencia');
     }
 
-   
+
+
+
+    // VENDAS AREA
     public function vendas(){
 
          //listando clientes
@@ -106,6 +111,12 @@ class adminController extends Controller
 
     }
 
+
+
+
+
+
+    // TAREFAS AREA
     public function tarefas(){
 
         $id = $_GET['id'];
@@ -176,11 +187,34 @@ class adminController extends Controller
         
 
 
-    
-    public function cadastroDeCliente(Request $request){
+    // CLIENTES AREA
+    public function alteraCliente(Request $request){
+
+        $id = $request->get('id');
+
+        $data['nome'] = $request->get('nome');
+        $data['email'] = $request->get('email');
+        $data['telefone'] = $request->get('telefone');
+        $data['endereco'] = $request->get('endereco');
+        $data['cpf'] = $request->get('cpf');
+        $data['aparelho'] = $request->get('aparelho');
+
+        DB::table('cliente')->where('id',$id)->update(['nome'=>$data['nome'], 'email'=>$data['email'], 'telefone'=>$data['telefone'], 
+                                                       'endereco'=>$data['endereco'], 'cpf'=>$data['cpf'], 'aparelho'=>$data['aparelho']]);
+
+        Alert::success('Sucesso', 'Usuario cadastrado com sucesso');
+        return redirect()->route('admin.index');
+    }
+    public function alteraClienteView(){
+
         $id = $_GET['id'];
-        $clientes2 = DB::table('cliente')->get()->where('id',$id);
-        return view('newCliente');
+
+        $clientes = DB::table('cliente')->get()->where('id',$id);
+
+        $data['clientes'] = $clientes;
+       
+
+        return view('alteraCliente',['data'=>$data, 'id'=>$id]);
     }
     public function storeCliente(Request $request){
 
@@ -195,17 +229,31 @@ class adminController extends Controller
 
 
         DB::table('cliente')->insert($data);
-        Alert::success('Sucesso', 'Usuario cadastrado com sucesso');
+        Alert::success('Sucesso', 'Usuario alterado com sucesso');
         return redirect()->back();
     }
+    public function deletaCliente(){
 
+        $id = $_GET['id'];
+
+        DB::table('cliente')->where('id',$id)->delete();
+        Alert::success('Sucesso', 'Usuario deletado com sucesso');
+        return redirect()->back();
+
+    }
+
+
+
+
+
+
+    // PRODUTOS AREA
     public function estoque(Request $request){
         $produto = DB::table('produto')->get();
         $data["produtos"] = $produto;
 
         return view('estoque',["data"=>$data]);
     }
-
 
     public function storeProduto(Request $request){
         $data['nome'] = $request->get('nome');
@@ -216,14 +264,41 @@ class adminController extends Controller
         Alert::success('Sucesso', 'Produto cadastrado com sucesso');
         return redirect()->back();
     }
-    public function produto(){
+    public function alteraProdutoView(){
 
-        return view('newProduto');
+        $data['produtos'] = DB::table('produto')->get();
+        
+
+        return view('newProduto',["data"=>$data]);
+
     }
+
+
+
     public function user(){
 
         return view('newuser');
     }
+
+
+    //PESQUISA
+    public function pesquisa(){
+        //listando clientes
+        
+        if(!(isset($_GET['pesquisa']))) {
+            $clientes = DB::table('cliente')->get();
+            $data["clientes"] = $clientes;        
+        }else{
+            $pesquisa = str_replace('-', ' ', $_GET['pesquisa']);
+            $clientes = DB::table('cliente')->where('nome', 'like', $pesquisa .'%')->get();
+            $data["clientes"] = $clientes;
+        }
+
+        return view('pesquisa',['data'=>$data]);
+    }
+
+
+    // USER AREA
     public function storeUser(Request $request){
         $data['nome'] = $request->get('nome');
         $data['login'] = $request->get('login');
@@ -259,28 +334,6 @@ class adminController extends Controller
             return redirect()->back();
         }
 
-        // $loginHash =  DB::table('usuarios')->select('login')->where('login',$login);
-        // $senhasHash = DB::table('usuarios')->select('senha')->where('senha',$senha);
-        // dd($loginHash);
-        // // criando a hash
-        // // $senha = 'admin';
-        // // $senha =  Hash::make($senha);
-        
-        // // dd($senha);
-        
-        // // LOGAR COM HASH
-        // if($login == $loginHash && Hash::check($senha, $senhasHash)){
-
-        //     session()->put("isAdmin",true);
-        //     return redirect()->route("admin.index");
-            
-
-        // }else{
-
-        //     alert()->error('Erro!','Erro ao logar!');
-        //     return redirect()->back(); 
-
-        // }
     }
     public function sair(){
 
