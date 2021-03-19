@@ -202,7 +202,7 @@ class adminController extends Controller
         DB::table('cliente')->where('id',$id)->update(['nome'=>$data['nome'], 'email'=>$data['email'], 'telefone'=>$data['telefone'], 
                                                        'endereco'=>$data['endereco'], 'cpf'=>$data['cpf'], 'aparelho'=>$data['aparelho']]);
 
-        Alert::success('Sucesso', 'Usuario cadastrado com sucesso');
+        Alert::success('Sucesso', 'Alterado com sucesso');
         return redirect()->route('admin.index');
     }
     public function alteraClienteView(){
@@ -255,6 +255,15 @@ class adminController extends Controller
         return view('estoque',["data"=>$data]);
     }
 
+    public function deletaProduto(){
+        $id = $_GET['id'];
+
+        DB::table('produto')->where('id',$id)->delete();
+        Alert::success('Sucesso', 'Produto deletado com sucesso');
+        return redirect()->back();
+
+    }
+
     public function storeProduto(Request $request){
         $data['nome'] = $request->get('nome');
         $data['quantidade'] = $request->get('quantidade');
@@ -266,14 +275,36 @@ class adminController extends Controller
     }
     public function alteraProdutoView(){
 
-        $data['produtos'] = DB::table('produto')->get();
+        $id = $_GET['id'];
+
+        $produtos = DB::table('produto')->get()->where('id',$id);
+
+        $data['produtos'] = $produtos;
         
 
-        return view('newProduto',["data"=>$data]);
+        return view('newProduto',['data'=>$data,'id'=>$id]);
 
     }
+    public function alteraProduto(Request $request){
+
+        $id = $request->get('id');
+   
+        $data['nome'] = $request->get('nome');
+        $data['quantidade'] = $request->get('quantidade');
+        $data['preco'] = $request->get('preco');
 
 
+        DB::table('produto')->where('id',$id)->update(['nome'=>$data['nome'], 'quantidade'=>$data['quantidade'], 'preco'=>$data['preco']]);
+        
+        Alert::success('Sucesso', 'Produto alterado com sucesso');
+        return redirect()->route('admin.estoque');
+    }
+    public function pesquisaProduto(){
+        $produto = DB::table('produto')->get();
+        $data["produtos"] = $produto;
+
+        return view('pesquisaProduto',["data"=>$data]);
+    }
 
     public function user(){
 

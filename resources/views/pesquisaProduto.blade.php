@@ -1,24 +1,136 @@
-<!DOCTYPE html>
-<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Windmill Dashboard - Forms</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./assets/css/tailwind.output.css" />
-    <script
-      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
-      defer
-    ></script>
-    <script src="./assets/js/init-alpine.js"></script>
-  </head>
-  <body>
+@extends('templates.template')
+
+@section('conteudo')
+
+<style>
+    body,
+html {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    background: rgb(255, 255, 255);
+}
+
+
+* {
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+}
+
+.card {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    height: 180px;
+    width: 300px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    animation: to-right 1s;
+}
+
+.header-card {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-card svg {
+    stroke: rgb(37, 37, 37);
+    width: 30px;
+    height: 30px;
+    padding: 1px;
+    stroke-width: 2;
+    border-radius: 5px;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.header-card svg:hover {
+    background: rgb(204, 204, 204);
+}
+
+.header-card h2 {
+    font-size: 13pt;
+    color: rgb(37, 37, 37);
+}
+
+.card p {
+    color: rgb(37, 37, 37);
+    font-size: 10pt;
+    margin-top: 10px;
+}
+
+.card p span {
+    color: rgb(37, 37, 37);
+    font-weight: bold;
+}
+
+.card button {
+    padding: 10px;
+    width: 120px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+    color: white;
+    font-size: 8pt;
+    background: #7E3AF2;
+    border-radius: 5px;
+    transition: .3s;
+}
+
+.card button:hover {
+    transform: scale(1.02);
+}
+.search-button{
+  font-size: 9pt;
+  margin-left: 20px;
+  padding: 10px;
+  background: #7E3AF2;
+  font-weight: bold;
+  color: white;
+  border-radius: 8px;
+}
+
+@keyframes to-right {
+    0%{
+        margin-right: -500px;
+    }
+    100%{
+        margin-right: 20px;
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+    .card {
+        bottom: 10px;
+        right: 10px;
+        width: 280px;
+    }
+}
+
+    .modal {
+      transition: opacity 0.25s ease;
+    }
+    body.modal-active {
+      overflow-x: hidden;
+      overflow-y: visible !important;
+    }
+  </style>
     <div
       class="flex h-screen bg-gray-50 dark:bg-gray-900"
-      :class="{ 'overflow-hidden': isSideMenuOpen}"
+      :class="{ 'overflow-hidden': isSideMenuOpen }"
     >
       <!-- Desktop sidebar -->
       <aside
@@ -29,13 +141,17 @@
             class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
             href="#"
           >
-            Windmill
+            Assistencia do Murilo
           </a>
           <ul class="mt-6">
             <li class="relative px-6 py-3">
+              <span
+                class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                aria-hidden="true"
+              ></span>
               <a
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="index.html"
+                class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                href="{{ route("admin.index")}}"
               >
                 <svg
                   class="w-5 h-5"
@@ -57,13 +173,9 @@
           </ul>
           <ul>
             <li class="relative px-6 py-3">
-              <span
-                class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-                aria-hidden="true"
-              ></span>
               <a
-                class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                href="forms.html"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                href="{{ route("admin.tarefas")}}"
               >
                 <svg
                   class="w-5 h-5"
@@ -79,13 +191,13 @@
                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
                   ></path>
                 </svg>
-                <span class="ml-4">Forms</span>
+                <span class="ml-4">Cliente</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="cards.html"
+                href="#"
               >
                 <svg
                   class="w-5 h-5"
@@ -101,10 +213,10 @@
                     d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
                   ></path>
                 </svg>
-                <span class="ml-4">Cards</span>
+                <span class="ml-4">Estoque</span>
               </a>
             </li>
-            <li class="relative px-6 py-3">
+            <!-- <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                 href="charts.html"
@@ -124,7 +236,7 @@
                   ></path>
                   <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
                 </svg>
-                <span class="ml-4">Charts</span>
+                <span class="ml-4">#</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
@@ -146,7 +258,7 @@
                     d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
                   ></path>
                 </svg>
-                <span class="ml-4">Buttons</span>
+                <span class="ml-4">#</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
@@ -168,9 +280,9 @@
                     d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                   ></path>
                 </svg>
-                <span class="ml-4">Modals</span>
+                <span class="ml-4">#</span>
               </a>
-            </li>
+            </li> -->
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
@@ -188,7 +300,7 @@
                 >
                   <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                 </svg>
-                <span class="ml-4">Tables</span>
+                <span class="ml-4">Vendas</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
@@ -212,7 +324,7 @@
                       d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
                     ></path>
                   </svg>
-                  <span class="ml-4">Pages</span>
+                  <span class="ml-4">Paginas</span>
                 </span>
                 <svg
                   class="w-4 h-4"
@@ -247,14 +359,14 @@
                     class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                   >
                     <a class="w-full" href="pages/create-account.html">
-                      Create account
+                      Criar conta ADM
                     </a>
                   </li>
                   <li
                     class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                   >
                     <a class="w-full" href="pages/forgot-password.html">
-                      Forgot password
+                      Link para o website
                     </a>
                   </li>
                   <li
@@ -265,19 +377,20 @@
                   <li
                     class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                   >
-                    <a class="w-full" href="pages/blank.html">Blank</a>
+                    <a class="w-full" href="pages/blank.html">#</a>
                   </li>
                 </ul>
               </template>
             </li>
           </ul>
           <div class="px-6 my-6">
-            <button
+            <a
+              href=""
               class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
             >
-              Create account
-              <span class="ml-2" aria-hidden="true">+</span>
-            </button>
+              Cadastro de novos usuarios
+              <span class="ml-2" aria-hidden="true">></span>
+            </a>
           </div>
         </div>
       </aside>
@@ -310,13 +423,17 @@
             class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
             href="#"
           >
-            Windmill
+            Assistencia do Murilo
           </a>
           <ul class="mt-6">
             <li class="relative px-6 py-3">
+              <span
+                class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                aria-hidden="true"
+              ></span>
               <a
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="index.html"
+                class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+                href="{{ route("admin.index")}}"
               >
                 <svg
                   class="w-5 h-5"
@@ -338,13 +455,9 @@
           </ul>
           <ul>
             <li class="relative px-6 py-3">
-              <span
-                class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-                aria-hidden="true"
-              ></span>
               <a
-                class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                href="forms.html"
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                href="{{ route("admin.tarefas")}}"
               >
                 <svg
                   class="w-5 h-5"
@@ -360,13 +473,13 @@
                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
                   ></path>
                 </svg>
-                <span class="ml-4">Forms</span>
+                <span class="ml-4">Tarefas</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="cards.html"
+                href="{{ route("admin.estoque")}}"
               >
                 <svg
                   class="w-5 h-5"
@@ -382,74 +495,7 @@
                     d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
                   ></path>
                 </svg>
-                <span class="ml-4">Cards</span>
-              </a>
-            </li>
-            <li class="relative px-6 py-3">
-              <a
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="charts.html"
-              >
-                <svg
-                  class="w-5 h-5"
-                  aria-hidden="true"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
-                  ></path>
-                  <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
-                </svg>
-                <span class="ml-4">Charts</span>
-              </a>
-            </li>
-            <li class="relative px-6 py-3">
-              <a
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="buttons.html"
-              >
-                <svg
-                  class="w-5 h-5"
-                  aria-hidden="true"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
-                  ></path>
-                </svg>
-                <span class="ml-4">Buttons</span>
-              </a>
-            </li>
-            <li class="relative px-6 py-3">
-              <a
-                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="modals.html"
-              >
-                <svg
-                  class="w-5 h-5"
-                  aria-hidden="true"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                  ></path>
-                </svg>
-                <span class="ml-4">Modals</span>
+                <span class="ml-4">Estoque</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
@@ -469,7 +515,7 @@
                 >
                   <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                 </svg>
-                <span class="ml-4">Tables</span>
+                <span class="ml-4">Vendas</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
@@ -493,7 +539,7 @@
                       d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
                     ></path>
                   </svg>
-                  <span class="ml-4">Pages</span>
+                  <span class="ml-4">Páginas</span>
                 </span>
                 <svg
                   class="w-4 h-4"
@@ -528,14 +574,14 @@
                     class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                   >
                     <a class="w-full" href="pages/create-account.html">
-                      Create account
+                      Criar conta admin
                     </a>
                   </li>
                   <li
                     class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                   >
                     <a class="w-full" href="pages/forgot-password.html">
-                      Forgot password
+                    Link para o website
                     </a>
                   </li>
                   <li
@@ -546,7 +592,7 @@
                   <li
                     class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
                   >
-                    <a class="w-full" href="pages/blank.html">Blank</a>
+                    <a class="w-full" href="pages/blank.html">#</a>
                   </li>
                 </ul>
               </template>
@@ -556,20 +602,20 @@
             <button
               class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
             >
-              Create account
-              <span class="ml-2" aria-hidden="true">+</span>
+              Admin
+              <span class="ml-2" aria-hidden="true">></span>
             </button>
           </div>
         </div>
       </aside>
-      <div class="flex flex-col flex-1">
+      <div class="flex flex-col flex-1 w-full">
         <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
           <div
             class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300"
           >
             <!-- Mobile hamburger -->
             <button
-              class="p-1 -ml-1 mr-5 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"
+              class="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"
               @click="toggleSideMenu"
               aria-label="Menu"
             >
@@ -605,12 +651,16 @@
                     ></path>
                   </svg>
                 </div>
+                <div class="flex">
                 <input
+                  id="search-content"
                   class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
                   type="text"
-                  placeholder="Search for projects"
+                  placeholder="Procurar clientes"
                   aria-label="Search"
                 />
+                <button class="search-button" id="button-search">BUSCAR</button>
+                </div>
               </div>
             </div>
             <ul class="flex items-center flex-shrink-0 space-x-6">
@@ -649,78 +699,7 @@
                   </template>
                 </button>
               </li>
-              <!-- Notifications menu -->
-              <li class="relative">
-                <button
-                  class="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple"
-                  @click="toggleNotificationsMenu"
-                  @keydown.escape="closeNotificationsMenu"
-                  aria-label="Notifications"
-                  aria-haspopup="true"
-                >
-                  <svg
-                    class="w-5 h-5"
-                    aria-hidden="true"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"
-                    ></path>
-                  </svg>
-                  <!-- Notification badge -->
-                  <span
-                    aria-hidden="true"
-                    class="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full dark:border-gray-800"
-                  ></span>
-                </button>
-                <template x-if="isNotificationsMenuOpen">
-                  <ul
-                    x-transition:leave="transition ease-in duration-150"
-                    x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0"
-                    @click.away="closeNotificationsMenu"
-                    @keydown.escape="closeNotificationsMenu"
-                    class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700"
-                    aria-label="submenu"
-                  >
-                    <li class="flex">
-                      <a
-                        class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                        href="#"
-                      >
-                        <span>Messages</span>
-                        <span
-                          class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600"
-                        >
-                          13
-                        </span>
-                      </a>
-                    </li>
-                    <li class="flex">
-                      <a
-                        class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                        href="#"
-                      >
-                        <span>Sales</span>
-                        <span
-                          class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600"
-                        >
-                          2
-                        </span>
-                      </a>
-                    </li>
-                    <li class="flex">
-                      <a
-                        class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                        href="#"
-                      >
-                        <span>Alerts</span>
-                      </a>
-                    </li>
-                  </ul>
-                </template>
-              </li>
+        
               <!-- Profile menu -->
               <li class="relative">
                 <button
@@ -766,7 +745,7 @@
                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                           ></path>
                         </svg>
-                        <span>Profile</span>
+                        <span>Perfil</span>
                       </a>
                     </li>
                     <li class="flex">
@@ -789,7 +768,7 @@
                           ></path>
                           <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
-                        <span>Settings</span>
+                        <span>Configurações</span>
                       </a>
                     </li>
                     <li class="flex">
@@ -811,7 +790,7 @@
                             d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
                           ></path>
                         </svg>
-                        <span>Log out</span>
+                        <span>Sair</span>
                       </a>
                     </li>
                   </ul>
@@ -822,17 +801,13 @@
         </header>
         <main class="h-full pb-16 overflow-y-auto">
           <div class="container px-6 mx-auto grid">
-            <h2
-              class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
-            >
-              Forms
-            </h2>
+           
             <!-- CTA -->
             <a
-              class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
-              href="https://github.com/estevanmaito/windmill-dashboard"
+              class="flex items-center p-4 mb-8 text-sm font-semibold mt-10 text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
             >
-              <div class="flex items-center">
+              
+                
                 <svg
                   class="w-5 h-5 mr-2"
                   fill="currentColor"
@@ -842,283 +817,182 @@
                     d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
                   ></path>
                 </svg>
-                <span>Star this project on GitHub</span>
-              </div>
-              <span>View more &RightArrow;</span>
+                      <h2
+                    class="my-6 text-2xl font-semibold text-gray-100 dark:text-gray-200"
+                  >
+                   Controle de estoque
+                  </h2>
+        
+              
             </a>
 
-            <!-- General elements -->
-            <h4
-              class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
-            >
-              Elements
-            </h4>
-            <div
-              class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
-            >
-              <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Name</span>
-                <input
-                  class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                  placeholder="Jane Doe"
-                />
-              </label>
-
-              <div class="mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">
-                  Account Type
-                </span>
-                <div class="mt-2">
-                  <label
-                    class="inline-flex items-center text-gray-600 dark:text-gray-400"
-                  >
-                    <input
-                      type="radio"
-                      class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                      name="accountType"
-                      value="personal"
-                    />
-                    <span class="ml-2">Personal</span>
-                  </label>
-                  <label
-                    class="inline-flex items-center ml-6 text-gray-600 dark:text-gray-400"
-                  >
-                    <input
-                      type="radio"
-                      class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                      name="accountType"
-                      value="busines"
-                    />
-                    <span class="ml-2">Business</span>
-                  </label>
-                </div>
-              </div>
-
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">
-                  Requested Limit
-                </span>
-                <select
-                  class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                >
-                  <option>$1,000</option>
-                  <option>$5,000</option>
-                  <option>$10,000</option>
-                  <option>$25,000</option>
-                </select>
-              </label>
-
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">
-                  Multiselect
-                </span>
-                <select
-                  class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                  multiple
-                >
-                  <option>Option 1</option>
-                  <option>Option 2</option>
-                  <option>Option 3</option>
-                  <option>Option 4</option>
-                  <option>Option 5</option>
-                </select>
-              </label>
-
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Message</span>
-                <textarea
-                  class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                  rows="3"
-                  placeholder="Enter some long form content."
-                ></textarea>
-              </label>
-
-              <div class="flex mt-6 text-sm">
-                <label class="flex items-center dark:text-gray-400">
-                  <input
-                    type="checkbox"
-                    class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                  />
-                  <span class="ml-2">
-                    I agree to the
-                    <span class="underline">privacy policy</span>
-                  </span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Validation inputs -->
-            <h4
-              class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
-            >
-              Validation
-            </h4>
-            <div
-              class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
-            >
-              <!-- Invalid input -->
-              <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">
-                  Invalid input
-                </span>
-                <input
-                  class="block w-full mt-1 text-sm border-red-600 dark:text-gray-300 dark:bg-gray-700 focus:border-red-400 focus:outline-none focus:shadow-outline-red form-input"
-                  placeholder="Jane Doe"
-                />
-                <span class="text-xs text-red-600 dark:text-red-400">
-                  Your password is too short.
-                </span>
-              </label>
-
-              <!-- Valid input -->
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">
-                  Valid input
-                </span>
-                <input
-                  class="block w-full mt-1 text-sm border-green-600 dark:text-gray-300 dark:bg-gray-700 focus:border-green-400 focus:outline-none focus:shadow-outline-green form-input"
-                  placeholder="Jane Doe"
-                />
-                <span class="text-xs text-green-600 dark:text-green-400">
-                  Your password is strong.
-                </span>
-              </label>
-
-              <!-- Helper text -->
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">
-                  Helper text
-                </span>
-                <input
-                  class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                  placeholder="Jane Doe"
-                />
-                <span class="text-xs text-gray-600 dark:text-gray-400">
-                  Your password must be at least 6 characters long.
-                </span>
-              </label>
-            </div>
-
-            <!-- Inputs with icons -->
-            <h4
-              class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
-            >
-              Icons
-            </h4>
-            <div
-              class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
-            >
-              <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Icon left</span>
-                <!-- focus-within sets the color for the icon when input is focused -->
-                <div
-                  class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
-                >
-                  <input
-                    class="block w-full pl-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                    placeholder="Jane Doe"
-                  />
-                  <div
-                    class="absolute inset-y-0 flex items-center ml-3 pointer-events-none"
-                  >
-                    <svg
-                      class="w-5 h-5"
-                      aria-hidden="true"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+          
+          <!-- New Table -->
+          <div class="w-full overflow-hidden rounded-lg shadow-xs">
+            <span class="flex items-center col-span-3">
+                    <a
+                  
+                      type="submit"
+                      class="modal-open px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                     >
-                      <path
-                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      ></path>
-                    </svg>
-                  </div>
-                </div>
-              </label>
-
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Icon right</span>
-                <!-- focus-within sets the color for the icon when input is focused -->
-                <div
-                  class="relative text-gray-500 focus-within:text-purple-600 dark:focus-within:text-purple-400"
-                >
-                  <input
-                    class="block w-full pr-10 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                    placeholder="Jane Doe"
-                  />
-                  <div
-                    class="absolute inset-y-0 right-0 flex items-center mr-3 pointer-events-none"
-                  >
-                    <svg
-                      class="w-5 h-5"
-                      aria-hidden="true"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                    Adicionar novo produto
+                    </a>
+                    <!-- Search input -->
+                    <div class="flex justify-center  w-full">
+                      <div
+                        class="relative w-full max-w-xl mr-6 focus-within:text-purple-500"
+                      >
+                        <div class="absolute inset-y-0 flex items-center pl-2">
+                          <svg
+                            class="w-4 h-4"
+                            aria-hidden="true"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                              clip-rule="evenodd"
+                            ></path>
+                          </svg>
+                        </div>
+                        <input
+                          class="w-full pl-8 pr-2 text-sm text-black placeholder-purple-300 bg-purple-600 border-0  rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+                          type="text"
+                          placeholder="Procurar produtos"
+                          aria-label="Search"
+                        />
+                      </div>
+                    </div>
+              </span>
+              <div class="w-full overflow-x-auto">
+                <table class="w-full whitespace-no-wrap">
+                  <thead>
+                    <tr
+                      class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
                     >
-                      <path
-                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      ></path>
-                    </svg>
-                  </div>
-                </div>
-              </label>
-            </div>
-
-            <!-- Inputs with buttons -->
-            <h4
-              class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300"
-            >
-              Buttons
-            </h4>
-            <div
-              class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
-            >
-              <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">
-                  Button left
-                </span>
-                <div class="relative">
-                  <input
-                    class="block w-full pl-20 mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                    placeholder="Jane Doe"
-                  />
-                  <button
-                    class="absolute inset-y-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-l-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                      <th class="px-4 py-3">Produto</th>
+                      <th class="px-4 py-3">Quantidade</th>
+                      <th class="px-4 py-3">Preço</th>
+                      <th class="px-4 py-3">Ações</th>
+                    </tr>
+                  </thead>
+                  @foreach ($data["produtos"] as $produto)
+                  <tbody
+                    class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
                   >
-                    Click
-                  </button>
-                </div>
-              </label>
+                    <tr class="text-gray-700 dark:text-gray-400">
+                      <td class="px-4 py-3">
+                        <div class="flex items-center text-sm">
+                          <!-- Avatar with inset shadow -->
+                    
+                          <div>
+                            <p class="font-semibold">{{$produto->nome}}</p>
+                         
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-4 py-3 text-sm">
+                      {{$produto->quantidade}}
+                      </td>
+                      <td class="px-4 py-3 text-xs">
+                        <span
+                          class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100"
+                        >
+                        {{$produto->preco}}
+                        </span>
+                      </td>
+                      <td class="px-4 py-3 text-sm">
+        
+                        <a
+                        href="alteracao/produto?id={{$produto->id}}"
+                        type="button" value=""
+                        class="border  bg-yellow-300 text-black rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-yellow-600 focus:outline-none focus:shadow-outline"
+                        >
+                          E
+                        </a>
+                      
+                  
+                      <a href="deletaCliente?id={{$produto->id}}">
+                        <button
+                          type="button"
+                          class="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline"
+                        >
+                          D
+                        </button>
+                      </a>
+                  </td>
+                    </tr>
 
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">
-                  Button right
-                </span>
-                <div
-                  class="relative text-gray-500 focus-within:text-purple-600"
-                >
-                  <input
-                    class="block w-full pr-20 mt-1 text-sm text-black dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray form-input"
-                    placeholder="Jane Doe"
-                  />
-                  <button
-                    class="absolute inset-y-0 right-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-r-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                  >
-                    Click
-                  </button>
-                </div>
-              </label>
-            </div>
-          </div>
-        </main>
-      </div>
-    </div>
-  </body>
-</html>
+               
+                  </tbody>
+                  @endforeach
+                </table>
+              </div>
+  </main>
+           
+    
+            
+                             
+                         
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../../js/filterBusca2.js"></script>
+
+    <script>
+        $("#close-modal-bottom").click(() => {
+          $('#modal-bottom').hide(400);            
+        });
+
+        $("#called-client").click(() => {
+            $('#modal-bottom').hide(400);
+        });
+    </script>
+
+
+
+  <script>
+    var openmodal = document.querySelectorAll('.modal-open')
+    for (var i = 0; i < openmodal.length; i++) {
+      openmodal[i].addEventListener('click', function(event){
+    	event.preventDefault()
+    	toggleModal()
+      })
+    }
+    
+    const overlay = document.querySelector('.modal-overlay')
+    overlay.addEventListener('click', toggleModal)
+    
+    var closemodal = document.querySelectorAll('.modal-close')
+    for (var i = 0; i < closemodal.length; i++) {
+      closemodal[i].addEventListener('click', toggleModal)
+    }
+    
+    document.onkeydown = function(evt) {
+      evt = evt || window.event
+      var isEscape = false
+      if ("key" in evt) {
+    	isEscape = (evt.key === "Escape" || evt.key === "Esc")
+      } else {
+    	isEscape = (evt.keyCode === 27)
+      }
+      if (isEscape && document.body.classList.contains('modal-active')) {
+    	toggleModal()
+      }
+    };
+    
+    
+    function toggleModal () {
+      const body = document.querySelector('body')
+      const modal = document.querySelector('.modal')
+      modal.classList.toggle('opacity-0')
+      modal.classList.toggle('pointer-events-none')
+      body.classList.toggle('modal-active')
+    }
+    
+     
+  </script>
+          @include('sweetalert::alert')
+
+
+@endsection

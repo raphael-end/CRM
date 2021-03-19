@@ -244,9 +244,10 @@
                     </select>
                     @endforeach
                   </label>
-                  <p>storage/files/{{$tarefa->documento}}</p>
+                  <a href="/storage/files/{{$tarefa->documento}}">doc</a>
+           
                   
-                  <link rel="stylesheet" href="storage/files/{{$tarefa->documento}}">
+                  storage/files/{{$tarefa->documento}}
                   
                 </div>
                 

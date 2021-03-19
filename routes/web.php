@@ -28,11 +28,13 @@ Route::prefix("admin")->middleware("check.is.admin")->name('admin.')->group(func
 
     /* -------------------------------------- pesquisa -------------------------------------- */
 
+    Route::get('/pesquisa/produto', [App\Http\Controllers\adminController::class, 'pesquisaProduto'])->name("pesquisaProduto");
     Route::get('/pesquisa', [App\Http\Controllers\adminController::class, 'pesquisa'])->name("pesquisa");
     
     /* --------------------------------------  tarefas -------------------------------------- */
     Route::get('/cliente', [App\Http\Controllers\adminController::class, 'tarefas'])->name("tarefas");
     Route::post('/cadastro/tarefas/sucess', [App\Http\Controllers\adminController::class, 'storeTarefas'])->name("storeTarefas");
+    Route::get('/dowload', [App\Http\Controllers\adminController::class, 'dowload'])->name("dowload");
 
     /* -------------------------------------- clientes cadastro -------------------------------------- */
     //cadastra
@@ -50,6 +52,8 @@ Route::prefix("admin")->middleware("check.is.admin")->name('admin.')->group(func
     //altera
     Route::get('/alteracao/produto', [App\Http\Controllers\adminController::class, 'alteraProdutoView'])->name("alteraProdutoView");
     Route::post('/alteracao/produto/sucess', [App\Http\Controllers\adminController::class, 'alteraProduto'])->name("alteraProduto");
+    //exclui
+    Route::get('/deletaProduto', [App\Http\Controllers\adminController::class, 'deletaProduto'])->name("deletaProduto");
 
     /* -------------------------------------- Estoque -------------------------------------- */
     Route::get('/vendas', [App\Http\Controllers\adminController::class, 'vendas'])->name("vendas");
@@ -58,7 +62,7 @@ Route::prefix("admin")->middleware("check.is.admin")->name('admin.')->group(func
     Route::get('/novoUsuario', [App\Http\Controllers\adminController::class, 'user'])->name("user");
     Route::post('/cadastro/user/sucess', [App\Http\Controllers\adminController::class, 'storeUser'])->name("newUser");
 
-
+    
     /* -------------------------------------- warnings -------------------------------------- */
 
     Route::get('/deletePendencia', [App\Http\Controllers\adminController::class, 'deletePendencia'])->name("deletePendencia");

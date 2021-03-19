@@ -21,7 +21,7 @@
                       <h2
                     class="my-6 text-2xl font-semibold text-gray-100 dark:text-gray-200"
                   >
-                    Adicione aqui um novo produto
+                    Adicione aqui um novo produto 
                   </h2>
         
               
@@ -30,11 +30,14 @@
             <div
               class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
             >
-            <form action="{{route ("admin.storeProduto")}}" method="post">
+            @foreach ($data["produtos"] as $produto)
+            <form action="{{route ("admin.alteraProduto")}}" method="post">
               @csrf
+              <input hidden type="text" name="id" value="{{$id}}">
               <label class="block text-sm">
                 <span class="text-gray-700 dark:text-gray-400">Nome do produto</span>
                 <input
+                value="{{$produto->nome}}"
                  type="text" name="nome" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   placeholder="Ex: Tela"
                 />
@@ -45,6 +48,7 @@
                   Quantidade
                 </span>
                 <input
+                value="{{$produto->quantidade}}"
                   type="text" name="quantidade" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   placeholder="Ex: 100"
                 />
@@ -54,6 +58,7 @@
                   Preço
                 </span>
                 <input
+                value="{{$produto->preco}}"
                   type="text" name="preco"
                   class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   placeholder="Ex: 100,00"
@@ -69,6 +74,7 @@
                 </button>
               </div>
               </form>
+              @endforeach
             </div>
            
              </div>
