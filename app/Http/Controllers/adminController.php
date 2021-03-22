@@ -36,18 +36,22 @@ class adminController extends Controller
         //select users a ligar
         $ligar = "ligar";
         
-        $status = DB::table('tarefas')->inRandomOrder()->select('id_cliente')->where('status',$ligar)->limit(1)->get();
+        //$status = DB::table('tarefas')->inRandomOrder()->select('id_cliente')->where('status',$ligar)->limit(1)->get();
 
-        $status = DB::table('tarefas')->inRandomOrder()->select('id_cliente')->where('status',$ligar)->limit(1)->get();
+        $status = DB::table('tarefas')->inRandomOrder()->select('id_cliente','prazo')->where('status',$ligar)->limit(1)->get();
+
+        
         
         if(!isset($status[0])){
              $clientePendencia = "";
         }else{
              $clientePendencia = DB::table('cliente')->select('id', 'nome', 'telefone')->where('id', $status[0]->id_cliente)->get(); 
+             $prazo = (string)$status[0]->prazo;
+             
         }
         
 
-        return view('dashboard',['data'=>$data, 'clientQuant'=>$clientQuant, 'valor_total'=>$valor_total, 'novosClientes'=>$novosClientes, 'clientePendencia'=>$clientePendencia]);
+        return view('dashboard',['data'=>$data, 'clientQuant'=>$clientQuant, 'valor_total'=>$valor_total, 'novosClientes'=>$novosClientes, 'clientePendencia'=>$clientePendencia, 'status'=>$status]);
     }
 
     public function deletePendencia(){
@@ -104,6 +108,28 @@ class adminController extends Controller
          $clientsQuant['marco'] = DB::table('cliente')->whereMonth('created_at', '3')->count();
          //abril
          $mes['abril'] = DB::table('tarefas')->select('valorRep' , 'custoRep')->whereMonth('created_at', '4')->get();
+         $valors_total['abril'] = $mes['abril']->sum('valorRep');
+         $valors_custo['abril'] = $mes['abril']->sum('custoRep');
+
+         $clientsQuant['abril'] = DB::table('cliente')->whereMonth('created_at', '4')->count();
+         //maio
+         $mes['maio'] = DB::table('tarefas')->select('valorRep' , 'custoRep')->whereMonth('created_at', '5')->get();
+         $valors_total['maio'] = $mes['maio']->sum('valorRep');
+         $valors_custo['maio'] = $mes['maio']->sum('custoRep');
+
+         $clientsQuant['maio'] = DB::table('cliente')->whereMonth('created_at', '5')->count();
+         //junho
+         $mes['junho'] = DB::table('tarefas')->select('valorRep' , 'custoRep')->whereMonth('created_at', '6')->get();
+         $valors_total['junho'] = $mes['junho']->sum('valorRep');
+         $valors_custo['junho'] = $mes['junho']->sum('custoRep');
+
+         $clientsQuant['junho'] = DB::table('cliente')->whereMonth('created_at', '6')->count();
+         //julho
+         $mes['julho'] = DB::table('tarefas')->select('valorRep' , 'custoRep')->whereMonth('created_at', '7')->get();
+         $valors_total['julho'] = $mes['julho']->sum('valorRep');
+         $valors_custo['julho'] = $mes['julho']->sum('custoRep');
+
+         $clientsQuant['julho'] = DB::table('cliente')->whereMonth('created_at', '7')->count();
 
 
 
@@ -146,7 +172,6 @@ class adminController extends Controller
     }
     public function storeTarefas(Request $request){
 
-
         $data['id_cliente'] = $request->get('id_cliente');
         $data['nomeAtv'] = $request->get('nomeAtv');
         $data['valorRep'] = $request->get('valorRep');
@@ -154,6 +179,8 @@ class adminController extends Controller
         $data['nota'] = $request->get('nota');
         $status = 'ligar';
         $data['status'] = $status;
+        $data['prazo'] = $request->get('date');
+        $data['produtoUsado'] = $request->get('produtos');
 
         if($request->file('arquivo')->isValid()) {
 
@@ -300,8 +327,15 @@ class adminController extends Controller
         return redirect()->route('admin.estoque');
     }
     public function pesquisaProduto(){
-        $produto = DB::table('produto')->get();
-        $data["produtos"] = $produto;
+
+        if(!(isset($_GET['pesquisa']))) {
+            $produto = DB::table('produto')->get();
+            $data["produtos"] = $produto;        
+        }else{
+            $pesquisa = str_replace('-', ' ', $_GET['pesquisa']);
+            $produto = DB::table('produto')->where('nome', 'like', $pesquisa .'%')->get();
+            $data["produtos"] = $produto;
+        }
 
         return view('pesquisaProduto',["data"=>$data]);
     }
@@ -333,7 +367,7 @@ class adminController extends Controller
     public function storeUser(Request $request){
         $data['nome'] = $request->get('nome');
         $data['login'] = $request->get('login');
-        $data['senha'] = $request->get('senha');
+        $data['senha'] = Hash::make($request->get('senha'));
         $data['tipo'] = $request->get('tipo');
 
 
@@ -348,22 +382,46 @@ class adminController extends Controller
         // dd($request->input());
         $login = $request->login;
         $senha = $request->senha;       
+
+        $query = "SELECT idusuario, nome, login, senha, tipo FROM usuario WHERE login='$login'";
+    
+        $queryUser = DB::selectOne($query); 
+
         
-        if(empty($login) || empty($senha)){
-            return redirect()->route("admin.index");
-        }
-
-        $query = DB::table('usuario')->select('login','senha')->where('login',$login)->where('senha',$senha)->get();
-
-        $row = $query->count();
-
-        if($row == 1){
-            session()->put("isAdmin",true);
-            return redirect()->route("admin.index");
-        }else{
-            alert()->error('Erro!','Usuario ou senha incorretos!');
+        if(!$queryUser) {
+            alert()->error('Erro!','Usuario incorreto!');
             return redirect()->back();
         }
+
+        if(!(Hash::check($senha, $queryUser->senha))) {
+            alert()->error('Erro!','Senha incorreta!');
+            return redirect()->back();
+        }
+
+        session()->put('usuario', ['idusuario' => $queryUser->idusuario, 'login' => $queryUser->login, 'tipo' => $queryUser->tipo]);
+
+        return redirect()->route("admin.index");
+
+
+
+        // if(empty($login) || empty($senha)){
+        //     return redirect()->route("admin.index");
+        // }
+
+        // $query = DB::table('usuario')->select('login','senha')->where('login',$login)->where('senha',$senha)->get();
+
+        // $row = $query->count();
+
+        // if($row == 1){
+        //     session()->put("isAdmin",true);
+        //     return redirect()->route("admin.index");
+        // }else{
+        //     alert()->error('Erro!','Usuario ou senha incorretos!');
+        //     return redirect()->back();
+        // }
+
+
+
 
     }
     public function sair(){

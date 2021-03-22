@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Tailwind Starter Template - App Landing Page Template: Tailwind Toolbox</title>
+	<title>Pesquisa Produto</title>
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 	
@@ -78,7 +78,7 @@
 			<span class="flex items-center col-span-3">
                   <div>
                     <a
-                      href="{{route("admin.cadastroDeCliente")}}"
+                      href=""
                       type="submit"
                       class="px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                     >

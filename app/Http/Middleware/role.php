@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class CheckIsAdmin
+class role
 {
     /**
      * Handle an incoming request.
@@ -16,13 +16,16 @@ class CheckIsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        $isAdmin = session("isAdmin");
-
-        if($isAdmin != null && $isAdmin == true){
-
-            return $next($request);
+        if(session()->get('usuario') == NULL) {
+            return redirect('/login');
         }
 
-        return redirect()->route("login");
+
+        $roles = $roles = array_slice(func_get_args(), 2);
+        if(!in_array(session()->get('usuario')['tipo'], $roles)) {
+            return redirect()->back();
+        }
+            
+        return $next($request);
     }
 }

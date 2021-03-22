@@ -20,7 +20,7 @@ Route::get('/', function(){
     return view('landingpage');
 })->name("lp");
 
-Route::prefix("admin")->middleware("check.is.admin")->name('admin.')->group(function(){
+Route::prefix("admin")->middleware("role:admin,funcionario")->name('admin.')->group(function(){
     
     /* -------------------------------------- admin -------------------------------------- */
 
@@ -28,7 +28,7 @@ Route::prefix("admin")->middleware("check.is.admin")->name('admin.')->group(func
 
     /* -------------------------------------- pesquisa -------------------------------------- */
 
-    Route::get('/pesquisa/produto', [App\Http\Controllers\adminController::class, 'pesquisaProduto'])->name("pesquisaProduto");
+    Route::get('/pesquisaproduto', [App\Http\Controllers\adminController::class, 'pesquisaProduto'])->name("pesquisaProduto");
     Route::get('/pesquisa', [App\Http\Controllers\adminController::class, 'pesquisa'])->name("pesquisa");
     
     /* --------------------------------------  tarefas -------------------------------------- */
@@ -55,9 +55,7 @@ Route::prefix("admin")->middleware("check.is.admin")->name('admin.')->group(func
     //exclui
     Route::get('/deletaProduto', [App\Http\Controllers\adminController::class, 'deletaProduto'])->name("deletaProduto");
 
-    /* -------------------------------------- Estoque -------------------------------------- */
-    Route::get('/vendas', [App\Http\Controllers\adminController::class, 'vendas'])->name("vendas");
-
+    
     /* -------------------------------------- user -------------------------------------- */
     Route::get('/novoUsuario', [App\Http\Controllers\adminController::class, 'user'])->name("user");
     Route::post('/cadastro/user/sucess', [App\Http\Controllers\adminController::class, 'storeUser'])->name("newUser");
@@ -67,6 +65,12 @@ Route::prefix("admin")->middleware("check.is.admin")->name('admin.')->group(func
 
     Route::get('/deletePendencia', [App\Http\Controllers\adminController::class, 'deletePendencia'])->name("deletePendencia");
  
+});
+
+Route::prefix("admin")->middleware("role:admin")->name('admin.')->group(function(){
+    /* -------------------------------------- Estoque -------------------------------------- */
+    Route::get('/vendas', [App\Http\Controllers\adminController::class, 'vendas'])->name("vendas");
+
 });
 
 Route::get('/sair', [App\Http\Controllers\AdminController::class, 'sair'])->name("sair");
