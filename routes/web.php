@@ -60,7 +60,10 @@ Route::prefix("admin")->middleware("role:admin,funcionario")->name('admin.')->gr
     Route::get('/novoUsuario', [App\Http\Controllers\adminController::class, 'user'])->name("user");
     Route::post('/cadastro/user/sucess', [App\Http\Controllers\adminController::class, 'storeUser'])->name("newUser");
 
-    
+    /* -------------------------------------- warnings -------------------------------------- */
+    Route::post('/agendamento/sucess', [App\Http\Controllers\adminController::class, 'storeAgendamento'])->name("storeAgendamento");
+    Route::get('/agendamento', [App\Http\Controllers\adminController::class, 'agendamento'])->name("agendamento");
+
     /* -------------------------------------- warnings -------------------------------------- */
 
     Route::get('/deletePendencia', [App\Http\Controllers\adminController::class, 'deletePendencia'])->name("deletePendencia");

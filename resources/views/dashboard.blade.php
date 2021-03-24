@@ -1059,7 +1059,7 @@ html {
                       <td class="px-4 py-3 text-sm">
                         {{$cliente->aparelho}}
                       </td>
-                      <td class="px-4 py-3 text-sm">
+                      <td class="px-4 py-3 text-sm" style="display: flex; align-items: center; ">
         
                             <a
                             href="admin/alteracao/cliente?id={{$cliente->id}}"
@@ -1076,6 +1076,19 @@ html {
                               class="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline"
                             >
                               D
+                            </button>
+                          </a>
+                          <a href="admin/agendamento?id={{$cliente->id}}" style="padding: 0px; margin:0; margin-left: 8px;">
+                            <button
+                              type="button" style="padding: 11px; margin:0;"
+                              class="border  bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline"
+                            >
+                               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone-call" width="15" height="15" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                  <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+                                  <path d="M15 7a2 2 0 0 1 2 2" />
+                                  <path d="M15 3a6 6 0 0 1 6 6" />
+                                </svg>
                             </button>
                           </a>
                       </td>
@@ -1302,21 +1315,21 @@ html {
                                 </div>
                               </div>
                              
-                            @if($clientePendencia != "")
+                            @if($status != "")
                              <!-- MODAL LIGAR  -->
                              <div class="card" id="modal-bottom">
                               <div class="header-card">
-                                  <h2>{{$clientePendencia[0]->nome}}</h2>
+                                  <h2>{{$status[0]->nome_cliente}}</h2>
                                   <svg id="close-modal-bottom" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="56" height="56" viewBox="0 0 24 24" stroke-width="1.5" stroke="#000000" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
                                       <line x1="18" y1="6" x2="6" y2="18" />
                                       <line x1="6" y1="6" x2="18" y2="18" />
                                   </svg>
                               </div>
-                              <p>{{$clientePendencia[0]->nome}} está esperando sua ligação.</p>
-                              <p>Número: <span>{{$clientePendencia[0]->telefone}}</span></p>
-                              <p>O prazo é: <span>{{date('d/m/Y',  strtotime($status[0]->prazo)) }}</span></p>
-                              <a href="/admin/deletePendencia?id={{$clientePendencia[0]->id}}" target="_blank">
+                              <p>{{$status[0]->nome_cliente}} está esperando sua ligação.</p>
+                              <p>Número: <span>{{$status[0]->telefone_cliente}}</span></p>
+                              <!-- <p>O prazo é: <span>{{$status[0]->data_agendamento}}</span></p> -->
+                              <a href="/admin/deletePendencia?id={{$status[0]->idagendamento}}" target="_blank">
                                   <button type="submit" id="called-client">Já Liguei</button>
                               </a>
                           </div>
@@ -1380,6 +1393,4 @@ html {
      
   </script>
           @include('sweetalert::alert')
-
-
 @endsection

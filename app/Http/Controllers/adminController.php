@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\DBAL\TimestampType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -33,25 +34,35 @@ class adminController extends Controller
         $novosClientes['novasTarefas'] = DB::table('tarefas')->whereRaw('created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)')->count();
         $novosClientes['novasTarefasList'] = DB::table('tarefas')->whereRaw('created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)')->get();
 
-        //select users a ligar
-        $ligar = "ligar";
+        //select users a ligar 2
+        $ligar = "agendado";
+        $now = date('d/m/Y');
         
-        //$status = DB::table('tarefas')->inRandomOrder()->select('id_cliente')->where('status',$ligar)->limit(1)->get();
+        $status = DB::table('agendamento')->inRandomOrder()->select('idagendamento', 'idcliente', 'telefone_cliente', 'data_agendamento', 'status_agendamento', 'nome_cliente')->where('data_agendamento',$now)->where('status_agendamento',$ligar)->limit(1)->get();
 
-        $status = DB::table('tarefas')->inRandomOrder()->select('id_cliente','prazo')->where('status',$ligar)->limit(1)->get();
-
-        
-        
         if(!isset($status[0])){
-             $clientePendencia = "";
-        }else{
-             $clientePendencia = DB::table('cliente')->select('id', 'nome', 'telefone')->where('id', $status[0]->id_cliente)->get(); 
-             $prazo = (string)$status[0]->prazo;
+            $status = "";
+       }
+
+        // //select users a ligar
+        // $ligar = "ligar";
+        
+        // //$status = DB::table('tarefas')->inRandomOrder()->select('id_cliente')->where('status',$ligar)->limit(1)->get();
+
+        // $status = DB::table('tarefas')->inRandomOrder()->select('id_cliente','prazo')->where('status',$ligar)->limit(1)->get();
+
+        
+        
+        // if(!isset($status[0])){
+        //      $clientePendencia = "";
+        // }else{
+        //      $clientePendencia = DB::table('cliente')->select('id', 'nome', 'telefone')->where('id', $status[0]->id_cliente)->get(); 
+        //      $prazo = (string)$status[0]->prazo;
              
-        }
+        // }
         
 
-        return view('dashboard',['data'=>$data, 'clientQuant'=>$clientQuant, 'valor_total'=>$valor_total, 'novosClientes'=>$novosClientes, 'clientePendencia'=>$clientePendencia, 'status'=>$status]);
+        return view('dashboard',['data'=>$data, 'clientQuant'=>$clientQuant, 'valor_total'=>$valor_total, 'novosClientes'=>$novosClientes, 'status'=>$status]);
     }
 
     public function deletePendencia(){
@@ -59,9 +70,8 @@ class adminController extends Controller
         $id = $_GET['id'];
 
 
-        DB::table('tarefas')->where('id_cliente',$id)->update(['status'=>"ligado"]);
-        
-
+        DB::table('agendamento')->where('idagendamento',$id)->update(['status_agendamento'=>"concluido"]);
+     
 
 
         return view('deletePendencia');
@@ -212,6 +222,47 @@ class adminController extends Controller
             
         }
         
+    //AGENDAMENTOS
+    public function agendamento(){
+        $id = $_GET['id'];
+        
+        $clientes = DB::table('tarefas')->get()->where('id_cliente',$id);
+        $clientes2 = DB::table('cliente')->get()->where('id',$id);
+        $clientes3 = DB::table('produto')->get();
+
+        $name = DB::table('cliente')->get()->where('id',$id);
+        
+        foreach ($name as $names) {
+           $user['nome'] =  $names->nome;
+           $user['email'] = $names->email;
+           $user['tel'] = $names->telefone;
+           $user['endereco'] = $names->endereco;
+           $user['cpf'] = $names->cpf;
+           $user['aparelho'] = $names->aparelho;
+        }
+
+        
+
+        $data["tarefas"] = $clientes;
+        $data["cliente"] = $clientes2;
+        $data["produtos"] = $clientes3;
+        return view('agendamentos',['data'=>$data, 'id'=>$id, 'user'=>$user]);
+    }
+    public function storeAgendamento(Request $request){
+        
+        $data['idcliente'] = $request->get('id_cliente');    
+        $data['nome_cliente'] = $request->get('nomec');
+        $data['telefone_cliente'] = $request->get('telefone_cliente');
+        $data['data_agendamento'] = $request->get('date'); 
+        $data['data_agendamento'] = date('d/m/Y',  strtotime($data['data_agendamento'])); 
+        $data['status_agendamento'] = "agendado";
+
+        DB::table('agendamento')->insert($data);
+        
+        Alert::success('Sucesso', 'Agendado com sucesso');
+        return redirect()->back();
+        
+    }
 
 
     // CLIENTES AREA
