@@ -226,7 +226,7 @@ class adminController extends Controller
     public function agendamento(){
         $id = $_GET['id'];
         
-        $clientes = DB::table('tarefas')->get()->where('id_cliente',$id);
+        $clientes = DB::table('agendamento')->get()->where('idcliente',$id);
         $clientes2 = DB::table('cliente')->get()->where('id',$id);
         $clientes3 = DB::table('produto')->get();
 
@@ -241,9 +241,7 @@ class adminController extends Controller
            $user['aparelho'] = $names->aparelho;
         }
 
-        
-
-        $data["tarefas"] = $clientes;
+        $data["agendamento"] = $clientes;
         $data["cliente"] = $clientes2;
         $data["produtos"] = $clientes3;
         return view('agendamentos',['data'=>$data, 'id'=>$id, 'user'=>$user]);
@@ -479,7 +477,7 @@ class adminController extends Controller
 
         session()->forget('isAdmin');
 
-        return redirect()->route("home");
+        return redirect()->route("login");
     }
 
 }
