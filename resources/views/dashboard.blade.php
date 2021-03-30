@@ -143,7 +143,7 @@ html {
           class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
           href="#"
         >
-          Assistencia do Murilo
+          Lord cell
         </a>
         <ul class="mt-6">
           <li class="relative px-6 py-3">
@@ -346,7 +346,7 @@ html {
             class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
             href="#"
           >
-            Assistencia do Murilo
+          Lord Cell
           </a>
           <ul class="mt-6">
             <li class="relative px-6 py-3">
@@ -849,7 +849,7 @@ html {
             <!-- CTA -->
             <a
               class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
-              href="#"
+              href="{{route("admin.vendas")}}"
             >
               <div class="flex items-center">
                 <svg
@@ -1211,7 +1211,7 @@ html {
                                                 <label class="block text-sm">
                                                   <span class="text-gray-700 dark:text-gray-400">Nome</span>
                                                   <input
-                                                  required
+                                        
                                                   type="text" name="nome" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                                                     placeholder="Raphael de Moura"
                                                   />
@@ -1222,7 +1222,7 @@ html {
                                                     E-mail
                                                   </span>
                                                   <input
-                                                    required
+                                           
                                                     type="text" name="email" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                                                     placeholder="raphaelmourateixeira@gmail.com"
                                                   />
@@ -1232,7 +1232,7 @@ html {
                                                     Telefone
                                                   </span>
                                                   <input
-                                                    required
+                                          
                                                     type="text" name="telefone"
                                                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                                                     placeholder="(31)975695622"
@@ -1243,7 +1243,7 @@ html {
                                                     Endereço
                                                   </span>
                                                   <input
-                                                    required
+                                                   
                                                     type="text" name="endereco"
                                                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                                                     placeholder="Rua 1, bairro 2, numero 0, mg"
@@ -1254,7 +1254,7 @@ html {
                                                     CPF
                                                   </span>
                                                   <input
-                                                    required
+                                               
                                                     type="text" name="cpf"
                                                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                                                     placeholder="130.850.826-12"
@@ -1265,7 +1265,7 @@ html {
                                                     Aparelho
                                                   </span>
                                                   <input
-                                                    required
+                                                  
                                                     type="text" name="aparelho"
                                                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                                                     placeholder="Iphone 11"
@@ -1294,7 +1294,7 @@ html {
                                   </div>
                                 </div>
                               </div>
-                             
+            
                             @if($status != "")
                              <!-- MODAL LIGAR  -->
                              <div class="card" id="modal-bottom">

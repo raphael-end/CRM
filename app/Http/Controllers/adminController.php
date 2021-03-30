@@ -35,9 +35,11 @@ class adminController extends Controller
         $novosClientes['novasTarefasList'] = DB::table('tarefas')->whereRaw('created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)')->get();
 
         //select users a ligar 2
+        
+        date_default_timezone_set('America/Sao_Paulo');
         $ligar = "agendado";
         $now = date('d/m/Y');
-        
+
         $status = DB::table('agendamento')->inRandomOrder()->select('idagendamento', 'idcliente', 'telefone_cliente', 'data_agendamento', 'status_agendamento', 'nome_cliente')->where('data_agendamento',$now)->where('status_agendamento',$ligar)->limit(1)->get();
 
         if(!isset($status[0])){
@@ -224,6 +226,7 @@ class adminController extends Controller
         
     //AGENDAMENTOS
     public function agendamento(){
+
         $id = $_GET['id'];
         
         $clientes = DB::table('agendamento')->get()->where('idcliente',$id);
@@ -245,6 +248,7 @@ class adminController extends Controller
         $data["cliente"] = $clientes2;
         $data["produtos"] = $clientes3;
         return view('agendamentos',['data'=>$data, 'id'=>$id, 'user'=>$user]);
+
     }
     public function storeAgendamento(Request $request){
         

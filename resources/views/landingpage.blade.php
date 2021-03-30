@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Word Cell</title>
+	<title>Lord Cell</title>
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 
@@ -238,7 +238,7 @@
 					<line x1="9" y1="17" x2="9" y2="17.01" />
 					<path d="M20 6l-2 3l2 3l-2 3l2 3" />
 					</svg>
-					</svg> Word Cell
+					</svg> Lord Cell
 				</a>
 
 				<div class="flex w-1/2 justify-end content-center">

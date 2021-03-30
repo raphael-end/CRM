@@ -136,7 +136,7 @@
   <aside class="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
     <div class="py-4 text-gray-500 dark:text-gray-400">
       <a class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
-        Assistencia do Murilo
+        Lord cell
       </a>
       <ul class="mt-6">
         <li class="relative px-6 py-3">
@@ -477,6 +477,19 @@
                       D
                     </button>
                   </a>
+                  <a href="agendamento?id={{$cliente->id}}" style="padding: 0px; margin:0; margin-left: 8px;">
+                            <button
+                              type="button" style="padding: 11px; margin:0;"
+                              class="border  bg-green-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-green-600 focus:outline-none focus:shadow-outline"
+                            >
+                               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone-call" width="15" height="15" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                  <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+                                  <path d="M15 7a2 2 0 0 1 2 2" />
+                                  <path d="M15 3a6 6 0 0 1 6 6" />
+                                </svg>
+                            </button>
+                          </a>
                 </td>
               </tr>
 

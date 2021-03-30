@@ -55,11 +55,15 @@ Route::prefix("admin")->middleware("role:admin,funcionario")->name('admin.')->gr
     //exclui
     Route::get('/deletaProduto', [App\Http\Controllers\adminController::class, 'deletaProduto'])->name("deletaProduto");
 
-    
-  
     /* -------------------------------------- warnings -------------------------------------- */
     Route::post('/agendamento/sucess', [App\Http\Controllers\adminController::class, 'storeAgendamento'])->name("storeAgendamento");
     Route::get('/agendamento', [App\Http\Controllers\adminController::class, 'agendamento'])->name("agendamento");
+
+    
+    /* -------------------------------------- warnings -------------------------------------- */
+    Route::post('/agendamento/sucess', [App\Http\Controllers\adminController::class, 'storeAgendamento'])->name("storeAgendamento");
+    Route::get('/agendamento', [App\Http\Controllers\adminController::class, 'agendamento'])->name("agendamento");
+
 
     /* -------------------------------------- warnings -------------------------------------- */
 
@@ -73,10 +77,10 @@ Route::prefix("admin")->middleware("role:admin")->name('admin.')->group(function
       Route::post('/cadastro/user/sucess', [App\Http\Controllers\adminController::class, 'storeUser'])->name("newUser");
   
 
-    /* -------------------------------------- Estoque -------------------------------------- */
+      /* -------------------------------------- Estoque -------------------------------------- */
     Route::get('/vendas', [App\Http\Controllers\adminController::class, 'vendas'])->name("vendas");
 
 });
 
-Route::get('/sair', [App\Http\Controllers\AdminController::class, 'sair'])->name("sair");
-Route::post('/logar', [App\Http\Controllers\AdminController::class, 'logar'])->name("logar");
+Route::get('/sair', [App\Http\Controllers\adminController::class, 'sair'])->name("sair");
+Route::post('/logar', [App\Http\Controllers\adminController::class, 'logar'])->name("logar");

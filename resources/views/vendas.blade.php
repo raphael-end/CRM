@@ -157,7 +157,7 @@
         </svg>
         <span>Aqui está seu balanço total</span>
       </div>
-      <span>VER &RightArrow;</span>
+   
     </a>
     <!-- Cards -->
     <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
@@ -236,7 +236,7 @@
         </svg>
         <span>Aqui está seu balanço Mensal</span>
       </div>
-      <span>VER &RightArrow;</span>
+
     </a>
 
 
