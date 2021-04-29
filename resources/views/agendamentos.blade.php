@@ -13,7 +13,7 @@
         Informações do cliente
       </h2>
       <!-- CTA -->
-      <a class="w-2/3 flex flex-col p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
+      <a style="background-color: #002859;" class="w-2/3 flex flex-col p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
 
         <div class="flex flex-row items-center ">
           <div class="p-3 bg-gray-50 rounded-xl">
@@ -115,7 +115,7 @@
 
 
           <div>
-            <button type="submit" class="px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+            <button type="submit" style="background-color: #002859;" class="px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
               Agendar
             </button>
           </div>
@@ -127,7 +127,7 @@
       @foreach($data["agendamento"] as $agendamento)
       <div class="flex items-center ">
         <div class="bg-gray-300 rounded-full p-5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-event" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#6f32be" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-event" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#002859" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <rect x="4" y="5" width="16" height="16" rx="2" />
             <line x1="16" y1="3" x2="16" y2="7" />
@@ -148,18 +148,18 @@
         <div class="flex flex-col">
 
           <div class="flex mt-5 items-center p-3 shadow ">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notes" width="29" height="29" viewBox="0 0 24 24" stroke-width="1.5" stroke="#6f32be" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notes" width="29" height="29" viewBox="0 0 24 24" stroke-width="1.5" stroke="#002859" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <rect x="5" y="3" width="14" height="18" rx="2" />
               <line x1="9" y1="7" x2="15" y2="7" />
               <line x1="9" y1="11" x2="15" y2="11" />
               <line x1="9" y1="15" x2="13" y2="15" />
             </svg>
-            <input class="ml-4 w-full p-2 rounded-md" disabled value="Nota:" type="text">
+            <input class="ml-4 w-full p-2 rounded-md" disabled value="Nota: {{$agendamento->descricao}}" type="text">
 
           </div>
           <div class="flex mt-5 items-center p-3 shadow ">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history" width="29" height="29" viewBox="0 0 24 24" stroke-width="1.5" stroke="#6f32be" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history" width="29" height="29" viewBox="0 0 24 24" stroke-width="1.5" stroke="#002859" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <polyline points="12 8 12 12 14 14" />
               <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" />
@@ -168,7 +168,7 @@
 
           </div>
           <div class="flex mt-5 items-center p-3 shadow ">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone" width="29" height="29" viewBox="0 0 24 24" stroke-width="1.5" stroke="#6f32be" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone" width="29" height="29" viewBox="0 0 24 24" stroke-width="1.5" stroke="#002859" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
             </svg>

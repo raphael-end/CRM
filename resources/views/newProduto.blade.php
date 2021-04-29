@@ -4,7 +4,7 @@
   <div class="container px-6 mx-auto grid">
 
     <!-- CTA -->
-    <a class="flex items-center p-4 mb-8 text-sm font-semibold mt-10 text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
+    <a style="background-color: #002859;" class="flex items-center p-4 mb-8 text-sm font-semibold mt-10 text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
 
 
       <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -39,9 +39,28 @@
           </span>
           <input value="{{$produto->preco}}" type="text" name="preco" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Ex: 100,00" />
         </label>
+        <label class="block mt-4 text-sm">
+          <span class="text-gray-700 dark:text-gray-400">
+            Custo
+          </span>
+          <input value="{{$produto->custo}}" type="text" name="custo" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Ex: 100,00" />
+        </label>
+  
+        <label class="block mt-4 text-sm">
+          <span class="text-gray-700 dark:text-gray-400">
+            Posição no estoque
+          </span>
+          <input value="{{$produto->posEstoque}}" type="text" name="posEstoque" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Ex: 100,00" />
+        </label>
+        <label class="block mt-4 text-sm mb-5">
+          <span class="text-gray-700 dark:text-gray-400">
+            Estoque Minimo
+          </span>
+          <input value="{{$produto->estoqueMinimo}}" type="text" name="estoqueMinimo" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Ex: 100,00" />
+        </label>
 
         <div>
-          <button type="submit" class="px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+          <button style="background-color: #002859;"  type="submit" class="px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
             Cadastrar
           </button>
         </div>

@@ -25,12 +25,33 @@ Route::prefix("admin")->middleware("role:admin,funcionario")->name('admin.')->gr
     /* -------------------------------------- admin -------------------------------------- */
 
     Route::get('/', [App\Http\Controllers\adminController::class, 'index'])->name("index");
+    Route::get('/filtro', [App\Http\Controllers\adminController::class, 'filtro'])->name("filtro");
 
     /* -------------------------------------- pesquisa -------------------------------------- */
 
     Route::get('/pesquisaproduto', [App\Http\Controllers\adminController::class, 'pesquisaProduto'])->name("pesquisaProduto");
     Route::get('/pesquisa', [App\Http\Controllers\adminController::class, 'pesquisa'])->name("pesquisa");
+
+    /* --------------------------------------  vendas -------------------------------------- */
+    Route::get('/controlevendas', [App\Http\Controllers\adminController::class, 'controlevendas'])->name("controlevendas");
     
+    //cadastro de venda
+    Route::get('/novaVenda', [App\Http\Controllers\adminController::class, 'novaVenda'])->name("novaVenda");
+    
+    // Route::post('/cadastro/venda/sucess', [App\Http\Controllers\adminController::class, 'storeVenda'])->name("storeVenda");
+
+    //delete venda
+    Route::get('/deletaVenda', [App\Http\Controllers\adminController::class, 'deletaVenda'])->name("deletaVenda");
+    
+    //cadastro de serviço
+    // Route::post('/cadastro/servico/sucess', [App\Http\Controllers\adminController::class, 'storeServico'])->name("storeServico");
+
+    Route::get('/linhadotempo', [App\Http\Controllers\adminController::class, 'linhadotempo'])->name("linhadotempo");
+    Route::post('/nota', [App\Http\Controllers\adminController::class, 'nota'])->name("nota");
+    Route::get('/deleteNota', [App\Http\Controllers\adminController::class, 'deleteNota'])->name("deleteNota");
+
+
+    Route::get('/deletaServico', [App\Http\Controllers\adminController::class, 'deletaServico'])->name("deletaServico");
     /* --------------------------------------  tarefas -------------------------------------- */
     Route::get('/cliente', [App\Http\Controllers\adminController::class, 'tarefas'])->name("tarefas");
     Route::post('/cadastro/tarefas/sucess', [App\Http\Controllers\adminController::class, 'storeTarefas'])->name("storeTarefas");
@@ -59,6 +80,12 @@ Route::prefix("admin")->middleware("role:admin,funcionario")->name('admin.')->gr
     Route::post('/agendamento/sucess', [App\Http\Controllers\adminController::class, 'storeAgendamento'])->name("storeAgendamento");
     Route::get('/agendamento', [App\Http\Controllers\adminController::class, 'agendamento'])->name("agendamento");
 
+    Route::post('/agendamento2/sucess', [App\Http\Controllers\adminController::class, 'storeAgendamento2'])->name("storeAgendamento2");
+    Route::get('/agendamentos2', [App\Http\Controllers\adminController::class, 'agendamento2'])->name("agendamento2");
+
+    Route::post('/agendamento3/sucess', [App\Http\Controllers\adminController::class, 'storeAgendamento3'])->name("storeAgendamento3");
+    Route::get('/agendamentos3', [App\Http\Controllers\adminController::class, 'agendamento3'])->name("agendamento3");
+
     
     /* -------------------------------------- warnings -------------------------------------- */
     Route::post('/agendamento/sucess', [App\Http\Controllers\adminController::class, 'storeAgendamento'])->name("storeAgendamento");
@@ -84,3 +111,8 @@ Route::prefix("admin")->middleware("role:admin")->name('admin.')->group(function
 
 Route::get('/sair', [App\Http\Controllers\adminController::class, 'sair'])->name("sair");
 Route::post('/logar', [App\Http\Controllers\adminController::class, 'logar'])->name("logar");
+
+Route::post('refreshProduto', '\App\Http\Controllers\adminController@refreshProduto');
+Route::post('refreshServico', '\App\Http\Controllers\adminController@refreshServico');
+Route::post('storeVenda', '\App\Http\Controllers\adminController@storeVenda');
+Route::post('storeServico', '\App\Http\Controllers\adminController@storeServico');

@@ -20,6 +20,40 @@
     outline: none;
   }
 
+
+  .scroll {
+  width:350px;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.scroll th {
+  text-decoration: underline;
+}
+.scroll th,
+.scroll td {
+  padding: 5px;
+  text-align: left;
+  min-width: 200px;
+}
+
+
+.scroll thead {
+  background-color: red;
+  color: #fdfdfd;
+}
+.scroll thead tr {
+  display: block;
+  position: relative;
+}
+.scroll tbody {
+  display: block;
+  overflow: auto;
+  width: 1400px;
+  height: 400px;
+  overflow-y: scroll;
+    overflow-x: hidden;
+}
+
   .card {
     position: fixed;
     bottom: 20px;
@@ -125,24 +159,14 @@
     transition: opacity 0.25s ease;
   }
 
-  body.modal-active {
-    overflow-x: hidden;
-    overflow-y: visible !important;
-  .modal {
-    transition: opacity 0.25s ease;
-  }
 
-  body.modal-active {
-    overflow-x: hidden;
-    overflow-y: visible !important;
-  }
 </style>
 <main class="h-full pb-16 overflow-y-auto">
 
   <div class="container px-6 mx-auto grid">
 
     <!-- CTA -->
-    <a class="flex items-center p-4 mb-8 text-sm font-semibold mt-10 text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
+    <a  style="background-color: #002859;" class="flex items-center p-4 mb-8 text-sm font-semibold mt-10 text-purple-100  rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
 
 
       <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -159,23 +183,27 @@
     <!-- New Table -->
     <div class="w-full overflow-hidden rounded-lg shadow-xs">
       <span class="flex items-center col-span-3">
-        <a type="submit" class="modal-open px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+        <a type="submit"  style="background-color: #002859;" class="modal-open px-10 py-4 font-medium leading-5 text-white transition-colors duration-150  border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
           Adicionar novo produto
         </a>
         
       </span>
       <div class="w-full overflow-x-auto">
-        <table class="w-full whitespace-no-wrap">
+        <table class="scroll">
           <thead>
             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
               <th class="px-4 py-3">Produto</th>
               <th class="px-4 py-3">Quantidade</th>
               <th class="px-4 py-3">Preço</th>
+              <th class="px-4 py-3">Custo</th>
+              <th class="px-4 py-3">Estoque Minimo</th>
+              <th class="px-4 py-3">Posição no Estoque</th>
               <th class="px-4 py-3">Ações</th>
             </tr>
           </thead>
+         
+          <tbody>
           @foreach ($data["produtos"] as $produto)
-          <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
             <tr class="text-gray-700 dark:text-gray-400">
               <td class="px-4 py-3">
                 <div class="flex items-center text-sm">
@@ -187,15 +215,30 @@
                   </div>
                 </div>
               </td>
-              <td class="px-4 py-3 text-sm">
+              <td class="">
                 {{$produto->quantidade}}
               </td>
-              <td class="px-4 py-3 text-xs">
+              <td class="">
                 <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
                   {{$produto->preco}}
                 </span>
               </td>
-              <td class="px-4 py-3 text-sm">
+              <td class="">
+                <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                  {{$produto->custo}}
+                </span>
+              </td>
+              <td class="">
+                <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                  {{$produto->estoqueMinimo}}
+                </span>
+              </td>
+              <td class="">
+                <span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                  {{$produto->posEstoque}}
+                </span>
+              </td>
+              <td class="">
 
                 <a href="alteracao/produto?id={{$produto->id}}" type="button" value="" class="border  bg-yellow-300 text-black rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-yellow-600 focus:outline-none focus:shadow-outline">
                   E
@@ -210,9 +253,9 @@
               </td>
             </tr>
 
-
+            @endforeach
           </tbody>
-          @endforeach
+       
         </table>
       </div>
 
@@ -237,7 +280,7 @@
               <div class="container px-6 mx-auto grid rounded-br-2xl ">
 
                 <!-- CTA -->
-                <a class="flex items-center p-4 mb-8 text-sm font-semibold mt-10 text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
+                <a style="background-color: #002859;"  class="flex items-center p-4 mb-8 text-sm font-semibold mt-10 text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple">
 
 
                   <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -270,6 +313,24 @@
                       </span>
                       <input type="text" name="preco" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Ex: 100,00" />
                     </label>
+                    <label class="block mt-4 text-sm">
+                      <span class="text-gray-700 dark:text-gray-400">
+                        Custo
+                      </span>
+                      <input type="text" name="custo" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Ex: 100,00" />
+                    </label>
+                    <label class="block mt-4 text-sm">
+                      <span class="text-gray-700 dark:text-gray-400">
+                        Estoque minimo
+                      </span>
+                      <input type="text" name="estoqueMinimo" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Ex: 100,00" />
+                    </label>
+                    <label class="block mt-4 text-sm">
+                      <span class="text-gray-700 dark:text-gray-400">
+                        Posição no estoque
+                      </span>
+                      <input type="text" name="posEstoque" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" placeholder="Ex: 100,00" />
+                    </label>
 
 
 
@@ -278,19 +339,24 @@
               </div>
             </main>
 
-            <!--Footer-->
-            <div class="flex justify-between pt-2">
-              <button type="submit" class="px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                Cadastrar
-              </button>
-              <button class="modal-close px-4 bg-purple-600 p-3 rounded-lg text-white hover:bg-indigo-400">Fechar</button>
-            </div>
-            </form>
+          
+              <!--Footer-->
+              <div class="flex justify-between pt-2">
+                <button type="submit" class="px-10 py-4 font-medium leading-5 bg-green-500 text-white transition-colors duration-150  border border-transparent rounded-lg active:bg-green-600 hover:bg-green-600 focus:outline-none focus:shadow-outline-green-600">
+                  Cadastrar
+                </button>
+
+
+                </form>
+                <button class="modal-close px-4  p-3 rounded-lg bg-red-600 text-white hover:bg-red-700">Fechar</button>
+              </div>
+          
           </div>
         </div>
       </div>
 </main>
 <script>
+
   var openmodal = document.querySelectorAll('.modal-open')
   for (var i = 0; i < openmodal.length; i++) {
     openmodal[i].addEventListener('click', function(event) {
